@@ -1,0 +1,418 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "antrian app",
+    "dateExported": "2023-09-30T07:10:43.852Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "1614e53d-c658-4b06-b262-0307db0cf8f1",
+            "name": "auth",
+            "containerId": "",
+            "created": "2023-09-27T04:07:11.377Z",
+            "sortNum": 5000
+        },
+        {
+            "_id": "6dc382e7-0b76-49f0-b4dc-6428259d8589",
+            "name": "code queue",
+            "containerId": "",
+            "created": "2023-09-27T02:10:25.587Z",
+            "sortNum": 20000
+        },
+        {
+            "_id": "1bcd8d67-00cd-4e79-83ea-a9d9eb2daedf",
+            "name": "user",
+            "containerId": "",
+            "created": "2023-09-27T02:37:05.651Z",
+            "sortNum": 30000
+        },
+        {
+            "_id": "08a10f60-5c8a-4d0d-aa53-cfce058bdad6",
+            "name": "costumer queue",
+            "containerId": "",
+            "created": "2023-09-27T02:37:19.717Z",
+            "sortNum": 40000
+        },
+        {
+            "_id": "cff502c0-2cad-4a0c-acdc-4d9a26b3f25e",
+            "name": "assignment",
+            "containerId": "",
+            "created": "2023-09-27T03:16:02.193Z",
+            "sortNum": 50000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "0e191c89-84ee-4105-a711-f92f9c4ab72d",
+            "colId": "85499dbe-71e3-4117-86a3-aaee29836ab4",
+            "containerId": "1bcd8d67-00cd-4e79-83ea-a9d9eb2daedf",
+            "name": "view queue",
+            "url": "http://antrean-app.test/api/view-queue",
+            "method": "GET",
+            "sortNum": 5000,
+            "created": "2023-09-27T15:26:52.580Z",
+            "modified": "2023-09-27T15:27:25.199Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "f1ea92b4-1ea7-482e-8a84-83478d56098b",
+            "colId": "85499dbe-71e3-4117-86a3-aaee29836ab4",
+            "containerId": "08a10f60-5c8a-4d0d-aa53-cfce058bdad6",
+            "name": "code queue",
+            "url": "http://antrean-app.test/api/code-queue",
+            "method": "GET",
+            "sortNum": 7500,
+            "created": "2023-09-29T13:26:14.802Z",
+            "modified": "2023-09-29T13:26:14.802Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "95d08a35-2288-4893-aa04-7a3ebe39fc3c",
+            "colId": "85499dbe-71e3-4117-86a3-aaee29836ab4",
+            "containerId": "1bcd8d67-00cd-4e79-83ea-a9d9eb2daedf",
+            "name": "get role",
+            "url": "http://antrean-app.test/api/get-role",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-09-26T14:04:06.461Z",
+            "modified": "2023-09-26T14:04:36.434Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "f73a3a27-8adf-4e1d-8dae-bf7d2e04132f",
+            "colId": "85499dbe-71e3-4117-86a3-aaee29836ab4",
+            "containerId": "6dc382e7-0b76-49f0-b4dc-6428259d8589",
+            "name": "code queue",
+            "url": "http://antrean-app.test/api/code-queue",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-09-27T02:10:31.075Z",
+            "modified": "2023-09-27T02:27:47.387Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "37a27e9c-a408-4baf-9cd6-0b57e1a9093d",
+            "colId": "85499dbe-71e3-4117-86a3-aaee29836ab4",
+            "containerId": "6dc382e7-0b76-49f0-b4dc-6428259d8589",
+            "name": "code queue {id}",
+            "url": "http://antrean-app.test/api/code-queue/1",
+            "method": "GET",
+            "sortNum": 12500,
+            "created": "2023-09-27T02:28:06.778Z",
+            "modified": "2023-09-27T02:34:13.775Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "9324d11f-81d5-45d1-a2c1-137bd172da10",
+            "colId": "85499dbe-71e3-4117-86a3-aaee29836ab4",
+            "containerId": "6dc382e7-0b76-49f0-b4dc-6428259d8589",
+            "name": "code queue",
+            "url": "http://antrean-app.test/api/code-queue",
+            "method": "POST",
+            "sortNum": 15000,
+            "created": "2023-09-27T02:27:32.882Z",
+            "modified": "2023-09-27T02:27:32.882Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\" : \"Doktor gigi\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "e74c036f-2470-4ba1-b0bf-ecdeb5093cfe",
+            "colId": "85499dbe-71e3-4117-86a3-aaee29836ab4",
+            "containerId": "08a10f60-5c8a-4d0d-aa53-cfce058bdad6",
+            "name": "costumer queue",
+            "url": "http://antrean-app.test/api/costumer-queue/",
+            "method": "GET",
+            "sortNum": 15000,
+            "created": "2023-09-27T02:44:31.802Z",
+            "modified": "2023-09-27T02:44:43.613Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "8300127e-1c24-4659-8a95-4c0471597f14",
+            "colId": "85499dbe-71e3-4117-86a3-aaee29836ab4",
+            "containerId": "1bcd8d67-00cd-4e79-83ea-a9d9eb2daedf",
+            "name": "list queue",
+            "url": "http://antrean-app.test/api/list-queue?status=waiting",
+            "method": "GET",
+            "sortNum": 15000,
+            "created": "2023-09-27T12:47:17.708Z",
+            "modified": "2023-09-28T01:31:20.778Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "status",
+                    "value": "waiting",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "768ccd96-e0a4-419f-ab20-59a479ed5244",
+            "colId": "85499dbe-71e3-4117-86a3-aaee29836ab4",
+            "containerId": "1bcd8d67-00cd-4e79-83ea-a9d9eb2daedf",
+            "name": "choseAssignment",
+            "url": "http://antrean-app.test/api/chose-assignment",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-09-26T14:17:08.158Z",
+            "modified": "2023-09-29T13:34:05.013Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\": 9,\n  \"roles\": 4\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "75c78c9a-1868-42af-be55-f49f7de44054",
+            "colId": "85499dbe-71e3-4117-86a3-aaee29836ab4",
+            "containerId": "6dc382e7-0b76-49f0-b4dc-6428259d8589",
+            "name": "code queue",
+            "url": "http://antrean-app.test/api/code-queue/4",
+            "method": "PUT",
+            "sortNum": 20000,
+            "created": "2023-09-27T02:21:22.485Z",
+            "modified": "2023-09-27T02:34:58.918Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "36a51429-44ff-4ae4-8bcd-082857aff696",
+            "colId": "85499dbe-71e3-4117-86a3-aaee29836ab4",
+            "containerId": "6dc382e7-0b76-49f0-b4dc-6428259d8589",
+            "name": "code queue",
+            "url": "http://antrean-app.test/api/code-queue/7",
+            "method": "DELETE",
+            "sortNum": 30000,
+            "created": "2023-09-27T02:24:21.620Z",
+            "modified": "2023-09-27T02:35:17.572Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "a08e314f-de28-4070-a238-73f158617415",
+            "colId": "85499dbe-71e3-4117-86a3-aaee29836ab4",
+            "containerId": "08a10f60-5c8a-4d0d-aa53-cfce058bdad6",
+            "name": "costumer queue{id}",
+            "url": "http://antrean-app.test/api/costumer-queue/1",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-09-27T02:41:58.740Z",
+            "modified": "2023-09-29T13:31:42.689Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "ce7278fb-0003-402c-a595-fbed1406c0fe",
+            "colId": "85499dbe-71e3-4117-86a3-aaee29836ab4",
+            "containerId": "1614e53d-c658-4b06-b262-0307db0cf8f1",
+            "name": "login",
+            "url": "http://antrean-app.test/api/auth/login",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2023-09-27T04:07:11.381Z",
+            "modified": "2023-09-27T04:07:38.434Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\":\"admin@admin.com\",\n  \"password\":\"password\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "53abc2d4-7823-4ff3-8529-4250606e6af1",
+            "colId": "85499dbe-71e3-4117-86a3-aaee29836ab4",
+            "containerId": "1614e53d-c658-4b06-b262-0307db0cf8f1",
+            "name": "register",
+            "url": "http://attendance-app.test/api/auth/register",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2023-09-27T04:07:11.381Z",
+            "modified": "2023-09-27T04:07:11.381Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "e3a48faa-6667-495e-be28-5a50851b5b5a",
+            "colId": "85499dbe-71e3-4117-86a3-aaee29836ab4",
+            "containerId": "cff502c0-2cad-4a0c-acdc-4d9a26b3f25e",
+            "name": "assignment",
+            "url": "http://antrean-app.test/api/assignment/",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2023-09-27T03:16:15.708Z",
+            "modified": "2023-09-27T03:16:37.735Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "51c244fa-f8ce-499c-b2d8-46b8c2c5e481",
+            "colId": "85499dbe-71e3-4117-86a3-aaee29836ab4",
+            "containerId": "cff502c0-2cad-4a0c-acdc-4d9a26b3f25e",
+            "name": "assignment{$id}",
+            "url": "http://antrean-app.test/api/assignment/1",
+            "method": "GET",
+            "sortNum": 65000,
+            "created": "2023-09-27T03:22:33.153Z",
+            "modified": "2023-09-27T03:24:43.441Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "0771f4cf-749f-4c17-b3ad-60f3a3186fec",
+            "colId": "85499dbe-71e3-4117-86a3-aaee29836ab4",
+            "containerId": "cff502c0-2cad-4a0c-acdc-4d9a26b3f25e",
+            "name": "assignment{$id}",
+            "url": "http://antrean-app.test/api/assignment/1",
+            "method": "DELETE",
+            "sortNum": 70000,
+            "created": "2023-09-27T03:21:48.273Z",
+            "modified": "2023-09-27T03:25:44.273Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "9d3c9e70-c100-4d7a-ab30-b680699c3020",
+            "colId": "85499dbe-71e3-4117-86a3-aaee29836ab4",
+            "containerId": "1bcd8d67-00cd-4e79-83ea-a9d9eb2daedf",
+            "name": "pickQueue",
+            "url": "http://antrean-app.test/api/pick-queue/2",
+            "method": "GET",
+            "sortNum": 80000,
+            "created": "2023-09-27T14:57:27.020Z",
+            "modified": "2023-09-29T13:35:50.308Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        }
+    ]
+}

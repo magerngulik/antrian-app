@@ -1,0 +1,940 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Aplikasi antrean",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/pick-queue/{id}": {
+            "get": {
+                "tags": [
+                    "Queue"
+                ],
+                "summary": "Mengambil antrian untuk diproses",
+                "description": "Mengambil antrian yang siap untuk diproses berdasarkan ID assignment. Jika antrian dengan assignment yang sama sedang diproses, akan mengembalikan pesan kesalahan.",
+                "operationId": "pickQueue",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id assignment bisa di dapatkan ketika login, jika null bisa di ambil ketia pick role",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Item antrian berhasil diambil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Pesan sukses",
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Queue"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Selesaikan dulu proses yang sedang anda jalankan"
+                    },
+                    "404": {
+                        "description": "Tidak ada antrian yang tersedia"
+                    }
+                }
+            }
+        },
+        "/api/list-queue": {
+            "get": {
+                "tags": [
+                    "Queue"
+                ],
+                "summary": "Mengambil daftar antrian berdasarkan status",
+                "description": "Mengambil daftar antrian berdasarkan status yang diberikan dan tanggal saat ini.",
+                "operationId": "listQueue",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Status antrian yang akan diambil (misalnya, 'waiting', 'process' atau 'complete')",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Daftar antrian berhasil diambil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Queue"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Permintaan tidak valid: Status antrian harus disediakan"
+                    }
+                }
+            }
+        },
+        "/api/chose-assignment": {
+            "post": {
+                "tags": [
+                    "Assignment"
+                ],
+                "summary": "Choose Assignment",
+                "description": "Endpoint untuk memilih penugasan oleh pengguna.",
+                "operationId": "e0eee8c264b8287c8f3dd405ea101411",
+                "requestBody": {
+                    "description": "Data yang diperlukan untuk memilih penugasan.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id",
+                                    "roles"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "description": "ID pengguna.",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "roles": {
+                                        "description": "ID peran yang dipilih untuk penugasan.",
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Berhasil memilih penugasan.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID penugasan.",
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "user_id": {
+                                            "description": "ID pengguna.",
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "role_users_id": {
+                                            "description": "ID peran yang dipilih untuk penugasan.",
+                                            "type": "integer",
+                                            "example": 2
+                                        },
+                                        "created_at": {
+                                            "description": "Waktu penugasan dibuat.",
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-09-28 12:34:56"
+                                        },
+                                        "updated_at": {
+                                            "description": "Waktu penugasan diperbarui.",
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-09-28 12:34:56"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Gagal memilih penugasan karena validasi gagal atau data sudah ada.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "description": "Pesan error jika   pengguna sudah mengambil penugasan pada hari ini.",
+                                            "type": "string",
+                                            "example": "Anda sudah mengambil role pada hari ini"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/get-role": {
+            "get": {
+                "tags": [
+                    "Assignment"
+                ],
+                "summary": "Get Available Roles for Assignment",
+                "description": "Setelah User login, langkah selanjutnya adalah lihat apakah sudah ada assignment, jika belum ada ambil role nya di sini, isi endpoint ini adalah role yang tersedia di dalam api",
+                "operationId": "b8e7f58d181283204132cfa95c259aa4",
+                "responses": {
+                    "200": {
+                        "description": "Berhasil mendapatkan peran yang tersedia.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "description": "ID peran pengguna.",
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "name": {
+                                                "description": "Nama peran pengguna.",
+                                                "type": "string",
+                                                "example": "Editor"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Gagal autentikasi, token tidak valid atau tidak ada token.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Pesan error.",
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/costumer-queue": {
+            "get": {
+                "tags": [
+                    "Customer"
+                ],
+                "summary": "Get customer queue data",
+                "description": "Mendapatkan seluruh data antrian yang ada pada hari ini",
+                "operationId": "getCostumerQueue",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "kode": {
+                                                        "type": "string"
+                                                    },
+                                                    "status": {
+                                                        "type": "string"
+                                                    },
+                                                    "assignments_id": {
+                                                        "type": "integer",
+                                                        "nullable": true
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/costumer-queue/{id}": {
+            "get": {
+                "tags": [
+                    "Customer"
+                ],
+                "summary": "Create a new customer queue",
+                "description": "Untuk membuat kode antrian sesuai id kode yang di pilih, untuk id nya bisa di dapatkan pada costumer code",
+                "operationId": "createCustomerQueue",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the code queue",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Queue created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "kode": {
+                                            "type": "string"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Data not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/code-queue": {
+            "get": {
+                "tags": [
+                    "Customer"
+                ],
+                "summary": "Get a list of code queues",
+                "description": "Retrieve a list of all code queues.",
+                "operationId": "getCodeQueues",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "queue_code": {
+                                                        "type": "string"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Code Queue"
+                ],
+                "summary": "Membuat Code Queue baru",
+                "description": "Membuat Code Queue baru dengan nama yang diberikan.",
+                "operationId": "createCodeQueue",
+                "requestBody": {
+                    "description": "Data Code Queue yang akan dibuat",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Nama Code Queue yang akan dibuat",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Code Queue berhasil dibuat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/CodeQueue"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validasi gagal: Nama Code Queue diperlukan"
+                    }
+                }
+            }
+        },
+        "/api/code-queue/{id}": {
+            "get": {
+                "tags": [
+                    "Code Queue"
+                ],
+                "summary": "Mendapatkan informasi Code Queue berdasarkan ID",
+                "description": "Mengembalikan informasi Code Queue berdasarkan ID yang diberikan.",
+                "operationId": "getCodeQueueById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID dari Code Queue yang akan diambil",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data Code Queue berhasil ditemukan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/CodeQueue"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Data Code Queue tidak ditemukan"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Code Queue"
+                ],
+                "summary": "Memperbarui informasi Code Queue berdasarkan ID",
+                "description": "Memperbarui informasi Code Queue berdasarkan ID yang diberikan.",
+                "operationId": "updateCodeQueue",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID dari Code Queue yang akan diperbarui",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Data Code Queue yang akan diperbarui",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Nama yang akan digunakan untuk memperbarui Code Queue",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Data Code Queue berhasil diperbarui",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/CodeQueue"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Data Code Queue tidak ditemukan"
+                    },
+                    "422": {
+                        "description": "Validasi gagal: Nama Code Queue diperlukan"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Code Queue"
+                ],
+                "summary": "Menghapus Code Queue berdasarkan ID",
+                "description": "Menghapus Code Queue berdasarkan ID yang diberikan.",
+                "operationId": "deleteCodeQueue",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID dari Code Queue yang akan dihapus",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data Code Queue berhasil dihapus"
+                    },
+                    "404": {
+                        "description": "Data Code Queue tidak ditemukan"
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Login User",
+                "description": "Endpoint untuk melakukan autentikasi dan mendapatkan token akses.",
+                "operationId": "6722e46f789eb246c9c35010d18e84c9",
+                "requestBody": {
+                    "description": "Data login yang diperlukan.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "description": "Alamat email pengguna.",
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "admin@admin.com"
+                                    },
+                                    "password": {
+                                        "description": "Password pengguna.",
+                                        "type": "string",
+                                        "example": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Berhasil login dan mendapatkan token akses.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Status response.",
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "token": {
+                                                    "description": "Token akses yang digunakan untuk otentikasi.",
+                                                    "type": "string",
+                                                    "example": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjlmNjE5NjM3YzAxZ..."
+                                                },
+                                                "user": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "description": "ID pengguna.",
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "name": {
+                                                            "description": "Nama pengguna.",
+                                                            "type": "string",
+                                                            "example": "John Doe"
+                                                        },
+                                                        "email": {
+                                                            "description": "Alamat email pengguna.",
+                                                            "type": "string",
+                                                            "format": "email",
+                                                            "example": "user@example.com"
+                                                        },
+                                                        "assignment": {
+                                                            "description": "ID tugas yang diberikan kepada pengguna.",
+                                                            "type": "integer",
+                                                            "example": 123
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Gagal autentikasi, email atau password salah.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Status response.",
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "description": "Pesan error.",
+                                            "type": "string",
+                                            "example": "Email atau password salah"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Register User",
+                "description": "Endpoint untuk mendaftarkan pengguna baru.",
+                "operationId": "71613a537edb63807ecc9773ad6bd3af",
+                "requestBody": {
+                    "description": "Data yang diperlukan untuk mendaftarkan pengguna baru.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Nama pengguna.",
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "description": "Alamat email pengguna.",
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "description": "Password pengguna (minimal 6 karakter).",
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Pengguna berhasil terdaftar.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Pesan sukses.",
+                                            "type": "string",
+                                            "example": "User registered successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Gagal mendaftarkan pengguna karena validasi gagal.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Pesan error.",
+                                            "type": "string",
+                                            "example": "Validation error"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "name": {
+                                                    "description": "Daftar error validasi untuk nama.",
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "example": [
+                                                        "The name field is required."
+                                                    ]
+                                                },
+                                                "email": {
+                                                    "description": "Daftar error validasi untuk email.",
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "example": [
+                                                        "The email field is required.",
+                                                        "The email has already been taken."
+                                                    ]
+                                                },
+                                                "password": {
+                                                    "description": "Daftar error validasi untuk password.",
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "example": [
+                                                        "The password field is required.",
+                                                        "The password must be at least 6 characters."
+                                                    ]
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/logout": {
+            "get": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Logout User",
+                "description": "Endpoint untuk logout pengguna dan mencabut token akses saat ini.",
+                "operationId": "a9c63ed7d52168af81d5532dcce9eff8",
+                "responses": {
+                    "200": {
+                        "description": "Berhasil logout pengguna.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Status response.",
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "description": "Pesan sukses.",
+                                            "type": "string",
+                                            "example": "Berhasil logout"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Gagal autentikasi, token tidak valid atau tidak ada token.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Pesan error.",
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "CodeQueue": {
+                "title": "Code Queue",
+                "description": "Struktur data untuk Code Queue",
+                "properties": {
+                    "id": {
+                        "description": "ID Code Queue",
+                        "type": "integer"
+                    },
+                    "nama": {
+                        "description": "Nama Code Queue",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Queue": {
+                "title": "Queue",
+                "description": "Struktur data untuk antrian",
+                "properties": {
+                    "id": {
+                        "description": "ID Antrian",
+                        "type": "integer"
+                    },
+                    "status": {
+                        "description": "Status Antrian (misalnya, 'active' atau 'completed')",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Tanggal dan waktu pembuatan Antrian",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "bearerAuth",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
