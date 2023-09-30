@@ -36,5 +36,5 @@ ini merupakan bagian yang di sediakan, bagian ini akan menampilkan list/ layanan
 - get queue 
 bagian ini setelah user memilih role/layanan maka user akan mendapatkan nomor antrian dengan unique id pada hari tersebut, yang akan tertera di user merupaan code seperti A001, B001 dan sebagai nya
 
-## Fiture
-untuk 
+## Dokumentasi
+untuk dokumentasi anda bisa mengakses di *baseUrl/api/documentation/*, dokumentasi ini di buat dengan menggunakan swagger, untuk semua penjelasan sudah saya sertakan di dalam deskripsi, *selamat mencoba ya*   
