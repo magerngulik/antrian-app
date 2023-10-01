@@ -345,7 +345,7 @@ class AntreanController extends Controller
         $assignedRoles = Assignment::whereDate('created_at', $today)->pluck('role_users_id')->toArray();
         $availableRoles = RoleUser::whereNotIn('id', $assignedRoles)->get();
         $data = ["data" => $availableRoles];
-        return response()->json($ $data , 200);
+        return response()->json($data , 200);
     }
    
 
