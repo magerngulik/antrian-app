@@ -120,6 +120,16 @@ class AntreanController extends Controller
         $last_queue = Queue::with('assignment')->whereDate('created_at', $today)
                             ->where('status', 'process')
                             ->first();
+        if (empty($last_queue)) {
+                $data = [
+                    "data" => null,
+                    "message" => "Belum ada antrian hari ini"
+                ];
+            return response()->json($data, 200
+            
+          );
+        }
+                            
         $role = RoleUser::all();
         $assignment = Assignment::with('role', 'user')->whereDate('created_at', $today)->get();
         $queue = Queue::with('assignment')->whereDate('created_at', $today)
@@ -146,6 +156,8 @@ class AntreanController extends Controller
                 ] : null,
             ];
         }
+
+
         $data = [
             "last" => [
                 "kode" =>  $last_queue->kode,
