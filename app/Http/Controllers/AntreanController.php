@@ -93,12 +93,10 @@ class AntreanController extends Controller
                 if ($existingItemWithSameAssignment) {
                     return response()->json(['message' => 'Selesaikan dulu proses yang sedang anda jalankan'], 400);
                 }
-    
                 $queueItem->update([
                     'assignments_id' => $assignment,
                     'status' => 'process'
                 ]);
-    
                 $data = [
                     'message' => 'Item antrian berhasil diambil',
                     'data' => $queueItem
@@ -115,20 +113,101 @@ class AntreanController extends Controller
         }
     }
 
+    //melihat user sedang melayain costumer yang mana
+    public function viewQueueUser($id){
+        $today = Carbon::now()->toDateString();
+        $queue = Queue::where('assignments_id',$id)->where('status', 'process')->whereDate('created_at', $today)->first(); 
+        $dataUser = Assignment::with('role.code')->find($id);
+        $kode = $dataUser->role->code->queue_code; // isi nya kode seperti:B
+        $countQueue = Queue::whereDate('created_at', $today)
+                            ->where('status', 'waiting')
+                            ->where('kode', 'like', $kode . '%') 
+                            ->orderBy('updated_at', 'desc')
+                            ->count();
+        $data = [
+                  "data" => [
+                    "queue" => $queue,
+                    "last_queue" => $countQueue
+                  ]
+            ]; 
+        return response()->json($data, 200);
+    }
+
+    //update status queue yang sedang di prosess oleh user
+    public function confirmQueueUser($id){
+        $today = Carbon::now()->toDateString();
+        $queue = Queue::where('assignments_id',$id)->where('status', 'process')->whereDate('created_at', $today)->first(); 
+     
+        if ($queue) {
+            $updateResult = $queue->update([
+                'status' => 'complete'
+            ]);
+            if ($updateResult) {
+                $data = [
+                    "message" => "Konfirmasi berhasil"
+                ];
+                return response()->json($data, 200);
+            } else {
+                $data = [
+                    "message" => "Gagal melakukan pembaruan"
+                ];
+                return response()->json($data, 500); // atau kode status lain sesuai dengan kebutuhan Anda
+            }
+        } else {
+            $data = [
+                "message" => "Belum pelayanan yang harus di sudahi"
+            ];
+            return response()->json($data, 404); // Data tidak ditemukan
+        }        
+    }
+
+     //update status queue yang sedang di prosess oleh user
+     public function skipQueueUser($id){
+        $today = Carbon::now()->toDateString();
+        $queue = Queue::where('assignments_id',$id)->where('status', 'process')->whereDate('created_at', $today)->first(); 
+     
+        if ($queue) {
+            $updateResult = $queue->update([
+                'status' => 'skip'
+            ]);
+            if ($updateResult) {
+                $data = [
+                    "message" => "Skip berhasil"
+                ];
+                return response()->json($data, 200);
+            } else {
+                $data = [
+                    "message" => "Gagal melakukan Skip"
+                ];
+                return response()->json($data, 500); // atau kode status lain sesuai dengan kebutuhan Anda
+            }
+        } else {
+            $data = [
+                "message" => "Tidak ada data yang bisa di skip"
+            ];
+            return response()->json($data, 404); // Data tidak ditemukan
+        }        
+    }
+
+
+
+
+
     public function testViewQueue(){
         $today = Carbon::now()->toDateString();
-        $last_queue = Queue::with('assignment')->whereDate('created_at', $today)
+        $last_queue = Queue::with('assignment')
+                            ->whereDate('created_at', $today)
                             ->where('status', 'process')
+                            ->orderBy('updated_at', 'desc')
                             ->first();
         if (empty($last_queue)) {
                 $data = [
                     "data" => null,
                     "message" => "Belum ada antrian hari ini"
                 ];
-            return response()->json($data, 200
-            
-          );
+            return response()->json($data, 200);
         }
+
                             
         $role = RoleUser::all();
         $assignment = Assignment::with('role', 'user')->whereDate('created_at', $today)->get();
@@ -156,16 +235,15 @@ class AntreanController extends Controller
                 ] : null,
             ];
         }
-
-
         $data = [
-            "last" => [
-                "kode" =>  $last_queue->kode,
-                "status" =>  $last_queue->status,
-                "nama_role" =>  $last_queue->assignment->role->nama_role,
-            ],
-            "user_aktif" => $result,
-          
+            "data"  => [
+                "last" => [
+                    "kode" =>  $last_queue->kode,
+                    "status" =>  $last_queue->status,
+                    "nama_role" =>  $last_queue->assignment->role->nama_role,
+                ],
+                "user_aktif" => $result,
+            ]          
         ];
         return response()->json($data, 200);
     }
@@ -232,11 +310,13 @@ class AntreanController extends Controller
     public function listQueue(Request $request){
         $status = $request->input('status');
         $today = Carbon::now()->toDateString();
+      
         $queue = Queue::whereDate('created_at', $today)
                 ->where('status', $status)
                 ->get();
         $data = [
-            'data' => $queue
+            'data' => $queue,
+           
         ];
         return response()->json($data, 200);
     }
@@ -317,10 +397,25 @@ class AntreanController extends Controller
             }
         }
 
-        $data = Assignment::create([
+        $dataNew = Assignment::create([
             "user_id" => $id,
             "role_users_id" => $roles
         ]);
+        $dataNew->refresh();
+        $newlyCreatedId = $dataNew->id;
+        $today = Carbon::today();
+        $assignment = Assignment::find($newlyCreatedId);
+        $layanan = $assignment?->role->code->name ?? null;
+        $unit = $assignment?->role->nama_role ?? null;
+        $assignedRoles = $assignment?->id ?? null;
+        $data = [
+            "new_data" => $dataNew,
+            "assignment" => [
+                "id" =>$newlyCreatedId,
+                "layanan" =>$layanan,
+                "unit" =>$unit,
+            ]
+        ];
         return response()->json($data, 200);
     }
 

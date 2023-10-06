@@ -23,6 +23,11 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@admin.com',
         ]);
 
+        \App\Models\User::factory()->create([
+            'name' => 'user',
+            'email' => 'user@user.com',
+        ]);
+
         CodeQueue::create([
             'name' => 'Taler',
             'queue_code' => 'A'
@@ -46,7 +51,7 @@ class DatabaseSeeder extends Seeder
         }
 
         Assignment::create([
-            'user_id' => 11,
+            'user_id' => 1,
             'role_users_id' => 1
         ]);
         

@@ -56,7 +56,7 @@ class AuthentificationController extends Controller
      * )
      */
 
-   function login(Request $request){
+    public function login(Request $request){
     $credentials = $request->validate([
         'email' => 'required|email',
         'password' => 'required',
@@ -70,12 +70,13 @@ class AuthentificationController extends Controller
         $user->tokens()->delete();
         $today = Carbon::today();
         $token = $user->createToken('auth_token')->plainTextToken;
-         // Menggunakan first() untuk mengambil satu hasil pertama dari query
         $assignment = Assignment::where('user_id', $user->id)
             ->whereDate('created_at', $today)
             ->first();
-        $assignedRoles = $assignment ? $assignment->id : null;
-        
+        $layanan = $assignment?->role->code->name ?? null;
+        $unit = $assignment?->role->nama_role ?? null;
+        $assignedRoles = $assignment?->id ?? null;
+
         return response()->json([
             'status' => 'success',
             'data' => [
@@ -84,15 +85,48 @@ class AuthentificationController extends Controller
                             "id" => $user->id,
                             "name" => $user->name,
                             "email" => $user->email,
-                            "assignment" => $assignedRoles
+                            "assignment" => $assignedRoles,
+                            "layanan" =>$layanan,
+                            "unit" =>$unit,
                         ]],
+            "assignment" => $assignment
         ], 200);
+    }else{
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Email atau password salah',
+        ], 401);
     }
-    return response()->json([
-        'status' => 'error',
-        'message' => 'Email atau password salah',
-    ], 401);
+ 
    }
+
+   public function getUserAssignment(Request $request){
+
+        $token = $request->header('Authorization'); 
+        if ($this->validateToken($token)) {
+            $user = Auth::user(); 
+            $assignment = Assignment::where('user_id', $user->id)
+                          ->whereDate('created_at', $today)
+                          ->first();
+            $assignedRoles = $assignment ? $assignment->id : null;
+        
+            return response()->json([
+                'status' => 'success',
+                'data' => [
+                    'token' => $token,
+                    "user"=> [
+                                "id" => $user->id,
+                                "name" => $user->name,
+                                "email" => $user->email,
+                                "assignment" => $assignedRoles
+                            ]],
+            ], 200);
+
+        } else {
+            return response()->json(['error' => 'Token tidak valid'], 401);
+        }
+    }
+
 
 
    /**
@@ -189,8 +223,23 @@ class AuthentificationController extends Controller
     }
 
     
-    function me(Request $request) {
-        $user = Auth::user();
-        return response()->json($user, 200);
+    // function me(Request $request) {
+    //     $user = Auth::user();
+    //     return response()->json($user, 200);
+    // }
+
+    function me($userid) {
+        $user = $userid;
+        $today = Carbon::today();
+        $assignment = Assignment::with('role')->where('user_id', $user)
+        ->whereDate('created_at', $today)
+        ->first();
+        $layanan = $assignment->role->code->name;
+        $unit = $assignment->role->nama_role;
+        $data = [
+            "unit" => $unit,
+            "layanan" => $layanan,
+        ];
+        return response()->json($data, 200);
     }
 }

@@ -30,11 +30,13 @@ Route::prefix('auth')->group(function () {
         AuthentificationController::class,
         'logout',
     ])->middleware('auth:sanctum');
-    Route::get('/profile', [
+    Route::get('/profile/{id}', [
         AuthentificationController::class,
         'me',
-    ])->middleware('auth:sanctum');
+    ]);
+    Route::get('get-user', [AuthentificationController::class, 'getUserAssignment'])->middleware('auth:sanctum');
 });
+
 
 //pick-queue user
 Route::get('pick-queue/{id}', [AntreanController::class, 'pickQueue']);
@@ -60,3 +62,7 @@ Route::delete('code-queue/{id}', [AntreanController::class, 'deleteCodeQueue']);
 Route::get('costumer-queue', [AntreanController::class, 'costumerQueue']);
 Route::get('costumer-queue/{id}', [AntreanController::class, 'costumerQueueCreate']);
 Route::get('test-view-queue', [AntreanController::class, 'testViewQueue']);
+
+Route::get('view-queue-user/{id}', [AntreanController::class, 'viewQueueUser']);
+Route::get('confirm-queue-user/{id}', [AntreanController::class, 'confirmQueueUser']);
+Route::get('skip-queue-user/{id}', [AntreanController::class, 'skipQueueUser']);

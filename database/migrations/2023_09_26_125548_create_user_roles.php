@@ -38,15 +38,11 @@ return new class extends Migration
         Schema::create('queues', function (Blueprint $table) {
             $table->id();
             $table->string('kode', 100);
-            $table->enum('status', ['waiting', 'process','complete'])->default('waiting');
+            $table->enum('status', ['waiting', 'process','complete','skip'])->default('waiting');
             $table->unsignedBigInteger('assignments_id')->nullable();
             $table->foreign('assignments_id')->references('id')->on('assignments')->nullable();
             $table->timestamps();
         });
-
-       
-
-
         
     }
 
