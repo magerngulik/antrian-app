@@ -66,3 +66,4 @@ Route::get('test-view-queue', [AntreanController::class, 'testViewQueue']);
 Route::get('view-queue-user/{id}', [AntreanController::class, 'viewQueueUser']);
 Route::get('confirm-queue-user/{id}', [AntreanController::class, 'confirmQueueUser']);
 Route::get('skip-queue-user/{id}', [AntreanController::class, 'skipQueueUser']);
+Route::get('recall-queue-user/{id}', [AntreanController::class, 'recallViewQueue']);

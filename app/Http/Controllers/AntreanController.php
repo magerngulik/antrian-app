@@ -113,6 +113,8 @@ class AntreanController extends Controller
         }
     }
 
+
+
     //melihat user sedang melayain costumer yang mana
     public function viewQueueUser($id){
         $today = Carbon::now()->toDateString();
@@ -189,9 +191,23 @@ class AntreanController extends Controller
         }        
     }
 
-
-
-
+    public function recallViewQueue($id){
+        $today = Carbon::now()->toDateString();
+        $queue = Queue::where('assignments_id',$id)->where('status', 'process')->whereDate('created_at', $today)->first(); 
+     
+        if ($queue) {
+            $queue->touch(); 
+            $data = [
+                "message" => "Berhasil Recall"
+            ];
+            return response()->json($data, 200);
+        } else {
+            $data = [
+                "message" => "Tidak ada data yang bisa di recall"
+            ];
+            return response()->json($data, 404); // Data tidak ditemukan
+        }   
+    }
 
     public function testViewQueue(){
         $today = Carbon::now()->toDateString();
@@ -241,6 +257,8 @@ class AntreanController extends Controller
                     "kode" =>  $last_queue->kode,
                     "status" =>  $last_queue->status,
                     "nama_role" =>  $last_queue->assignment->role->nama_role,
+                    "created_at" =>$last_queue->created_at,
+                    "updated_at" =>$last_queue->updated_at
                 ],
                 "user_aktif" => $result,
             ]          
